@@ -17,6 +17,12 @@ border: 1px solid red;
 box-shadow: 0 0 15px 5px rgba(255, 0, 0, 0.5); 
 animation: pop 0.5s ease;
 }
+.test1   {
+  font-family: "Helvetica Neue";
+  }
+.test2   {
+  font-family: "Helvetica";
+  }
   
   @keyframes pop {
     0% {
