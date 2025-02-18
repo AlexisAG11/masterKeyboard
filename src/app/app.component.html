@@ -5,9 +5,10 @@
     </div>
     <div class="flex items-center justify-center mb-5">
       <div *ngIf="combinedArray.length>0" class="text-[6rem] font-borel" >{{combinedArray[indexWord]}}</div>
+      <app-loader1 *ngIf="combinedArray.length<1" class="h-[144px]"></app-loader1>
     </div>
     <input
-    *ngIf="combinedArray.length > 0"
+    *ngIf="finish===false;"
     class="bg-[#1e271e] px-4 py-3 outline-none w-[320px] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] text-[1.2rem] mb-6"
     name="text"
     type="text"
@@ -18,15 +19,20 @@
       'uncorrect-message': isUncorrect,
     }"
     (keyup.enter)="checkWord()"
+    (input)="onInput($event)"
+    [disabled]="combinedArray.length < 1"
     />
+    <button      
+      *ngIf="finish===true"
+      class="bg-[#1e271e] px-4 py-3 outline-none w-[320px] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] text-[1.2rem] mb-6 correct-message hover:bg-[#343f34]">ENCORE</button>
     <div class="text-[2.5rem]">
       <span>{{formatTime(minutes)}}</span>:<span>{{formatTime(seconds)}}</span>:<span>{{formatTimeMili(milliseconds)}}</span>
     </div>
-    <div class="flex gap-6">
+    <!-- <div class="flex gap-6">
       <button (click)="startTimer()" class="bg-black text-white">start</button>
       <button (click)="stopTimer()" class="bg-black text-white">stop</button>
       <button (click)="resetTimer()" class="bg-black text-white">reset</button>
-    </div>
+    </div> -->
     <!-- <div (click)="SendAPI()" class="absolute top-[-10rem] group" [ngClass]="isLoading ? 'pointer-events-none opacity-50':''">
       <div
         class="relative  w-[280px] h-14 opacity-90 overflow-hidden rounded-xl bg-black z-10"

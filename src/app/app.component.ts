@@ -27,33 +27,34 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient){}
 
   SendAPI(){
-    // this.isLoading = true;
-    //  this.http.get(environment.apiUrl).subscribe(res => {
-    //   this.isLoading = false;
-    //   this.responseData = res;
-    //   this.easyWord = this.responseData.data.easy;
-    //   this.mediumWord = this.responseData.data.medium;
-    //   this.difficultWord = this.responseData.data.difficult;
-    //   console.log(this.easyWord);
-    //   console.log(this.mediumWord );
-    //   console.log(this.difficultWord);
-    //   this.combinedArray = this.easyWord.concat(this.mediumWord, this.difficultWord);
-    //   console.log(this.combinedArray);
-    // },
-    // error => {
-    //   console.log(error)
-    //   this.isError = true;
-    //   this.errorMsg = error.error.msg;
-    //   setTimeout(() => {
-    //     this.isError = false;
-    //   }, 2000)
-    // })
+    this.isLoading = true;
+     this.http.get(environment.apiUrl).subscribe(res => {
+      this.isLoading = false;
+      this.responseData = res;
+      this.easyWord = this.responseData.data.easy;
+      this.mediumWord = this.responseData.data.medium;
+      this.difficultWord = this.responseData.data.difficult;
+      console.log(this.easyWord);
+      console.log(this.mediumWord );
+      console.log(this.difficultWord);
+      this.combinedArray = this.easyWord.concat(this.mediumWord, this.difficultWord);
+      console.log(this.combinedArray);
+    },
+    error => {
+      console.log(error)
+      this.isError = true;
+      this.errorMsg = error.error.msg;
+      setTimeout(() => {
+        this.isError = false;
+      }, 2000)
+    })
   }
 
 
   isCorrect = false;
   isUncorrect = false;
-  counterWord = 0;
+  counterWord = 1;
+  finish = false;
 
   checkWord(){
     if(this.userInput === this.combinedArray[this.indexWord]){
@@ -61,11 +62,15 @@ export class AppComponent implements OnInit {
       this.isCorrect=true;
       this.counterWord++;
       console.log("well done");
+      console.log(this.indexWord);
       this.userInput = "";
-      if (this.indexWord===30) {
+
+      this.indexWord++;
+      if (this.indexWord===3) {
+        this.finish = true;
+        this.stopTimer()
         return
       }
-      this.indexWord++;
       setTimeout(() => {
         this.isCorrect = false;
       }, 500);
@@ -98,6 +103,9 @@ export class AppComponent implements OnInit {
         this.seconds = 0;
         this.minutes++;
       }
+      if (this.seconds===10) {
+        this.stopTimer();
+      }
     });
   }
 
@@ -124,11 +132,18 @@ export class AppComponent implements OnInit {
     return val
   }
 
+  onInput(e:Event) : void{
+    const input = e.target as HTMLInputElement;
+    if (input.value.length === 1 && this.counterWord === 1) {
+      this.startTimer();
+    }
+  }
+
 
   ngOnInit(): void {
-    // TO NOT CALL THE API FOR DEV PURPOSE
-
-    this.combinedArray = ['cat', 'dog', 'sun', 'book', 'tree', 'car', 'fish', 'star', 'hat', 'cup', 'apple', 'bridge', 'guitar', 'flower', 'bicycle', 'friend', 'window', 'pencil', 'otter', 'mountain', 'acquiesce', 'quintessential', 'ephemeral', 'infrastructure', 'juxtaposition', 'onomatopoeia', 'extrapolate', 'philosophical', 'superfluous', 'ubiquitous'];
+    // this.combinedArray = ['cat', 'dog', 'sun', 'book', 'tree', 'car', 'fish', 'star', 'hat', 'cup', 'apple', 'bridge', 'guitar', 'flower', 'bicycle', 'friend', 'window', 'pencil', 'otter', 'mountain', 'acquiesce', 'quintessential', 'ephemeral', 'infrastructure', 'juxtaposition', 'onomatopoeia', 'extrapolate', 'philosophical', 'superfluous', 'ubiquitous', '🎉'];
+    // this.combinedArray = ['cat', 'dog', 'sun','🎉'];
+    this.SendAPI();
   }
 
 
