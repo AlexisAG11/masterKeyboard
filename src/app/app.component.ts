@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { interval, Subscription } from 'rxjs';
@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   indexWord = 0;
   userInput = "";
 
+  @ViewChild('targetInput') target: any;
+
   isCorrect = false;
   isUncorrect = false;
   counterWord = 1;
@@ -32,11 +34,13 @@ export class AppComponent implements OnInit {
   milliseconds = 0;
   seconds = 0;
   minutes = 0;
-  private timerSubscription!: Subscription;
+  private timerId: any;         // Timer reference
+  private isRunning: boolean = false;  // Timer running flag
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef){}
 
   SendAPI(){
+    this.resetTimer();
     this.isLoading = true;
     this.combinedArray = [];
     this.counterWord = 1;
@@ -49,7 +53,10 @@ export class AppComponent implements OnInit {
       this.isLoading = false;
       this.responseData = res;
       this.combinedArray = this.responseData.data.words;
+      this.combinedArray = this.combinedArray.length > 30 ? this.combinedArray.slice(0, 30) : this.combinedArray;
       this.combinedArray.push('🎉');
+      this.cdr.detectChanges();
+      this.target.nativeElement.focus();
     },
     error => {
       console.log(error)
@@ -66,10 +73,10 @@ export class AppComponent implements OnInit {
       // good so next word
 
       this.indexWord++;
-      if (this.indexWord===10) {
+      if (this.indexWord===30) {
         this.finish = true;
         this.userInput = "";
-        this.stopTimer()
+        this.stopTimer();
         return
       }
       this.isCorrect=true;
@@ -89,8 +96,14 @@ export class AppComponent implements OnInit {
     }
   }
 
-  startTimer(): void {
-    this.timerSubscription = interval(10).subscribe(() => {
+  startTimer() {
+    // Prevent multiple intervals from being set
+    if (this.isRunning) return;
+
+    this.isRunning = true;
+
+    // Start the timer
+    this.timerId = setInterval(() => {
       this.milliseconds += 10;
       if (this.milliseconds >= 1000) {
         this.milliseconds = 0;
@@ -103,20 +116,23 @@ export class AppComponent implements OnInit {
       if (this.minutes===5) {
         this.stopTimer();
       }
-    });
+    }, 10);  // Increment every second (1000ms)
   }
 
-  stopTimer(): void {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
+  stopTimer() {
+    // Stop the timer
+    if (this.timerId) {
+      clearInterval(this.timerId);
+      this.isRunning = false;
     }
   }
 
-  resetTimer(): void {
-    this.stopTimer();
-    this.milliseconds = 0;
+  resetTimer() {
+    // Reset the timer to 0 and stop it
     this.seconds = 0;
+    this.milliseconds = 0;
     this.minutes = 0;
+    this.stopTimer();
   }
 
   formatTime(value: number): string {

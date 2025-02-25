@@ -4,9 +4,18 @@
     border: 1px solid green;
     /* padding: 10px;
     border-radius: 8px; */
-    box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.5); 
+    box-shadow: 0 0 15px 5px #00ff0080; 
     animation: pop 0.5s ease;
   }
+
+.correct-timer {
+  color: green;
+  transition: all 0.25s;
+}
+.uncorrect-timer {
+  color: red;
+  transition: all 0.25s;
+}
 
 .uncorrect-message {
 /* color: red; */

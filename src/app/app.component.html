@@ -1,34 +1,45 @@
-<div class="w-full h-[100vh] flex flex-col items-center justify-center">
-  <div class="flex flex-col relative items-center">
+<div class="w-full h-[100vh] flex flex-col items-center">
+  <div class="flex flex-col relative items-center mt-20">
     <div class="text-[2.5rem] mt-2 flex mb-12">
-      <span class="">{{counterWord}}</span>/10
+      <span class="">{{counterWord}}</span>/30
     </div>
-    <div class="flex items-center justify-center mb-5">
+    <div class="flex items-center justify-center mb-10">
       <div *ngIf="combinedArray.length>0" class="text-[6rem] font-borel" >{{combinedArray[indexWord]}}</div>
       <app-loader1 *ngIf="combinedArray.length<1" class="h-[144px]"></app-loader1>
     </div>
-    <input
-    *ngIf="finish===false;"
-    class="bg-[#1e271e] px-4 py-3 outline-none w-[320px] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] text-[1.2rem] mb-6"
-    name="text"
-    type="text"
-    autocomplete="off"
-    [(ngModel)]="userInput"
-    [ngClass]="{
-      'correct-message': isCorrect,
-      'uncorrect-message': isUncorrect,
-    }"
-    (keyup.enter)="checkWord()"
-    (input)="onInput($event)"
-    [disabled]="combinedArray.length < 1"
-    />
+    <div *ngIf="finish===false;"
+      class="flex items-center h-20 mb-6">
+      <input
+      #targetInput
+      class="bg-[#1e271e] px-4 py-3 outline-none w-[320px] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] text-[1.2rem]"
+      name="text"
+      type="text"
+      autocomplete="off"
+      [(ngModel)]="userInput"
+      [ngClass]="{
+        'correct-message': isCorrect,
+        'uncorrect-message': isUncorrect,
+      }"
+      (keyup.enter)="checkWord()"
+      (input)="onInput($event)"
+      [disabled]="combinedArray.length < 1"
+      />
+    </div>
+    <div *ngIf="finish===true;"
+    class="flex items-center h-20 mb-6">
     <button      
       *ngIf="finish===true"
       (click)="SendAPI()"
       [disabled]="isLoading"
-      class="bg-[#1e271e] px-4 py-3 outline-none w-[320px] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] text-[1.2rem] mb-6 correct-message hover:bg-[#343f34]"
-      [ngClass]="{'hover:bg-[#343f34]': !isLoading}">ENCORE</button>
-    <div class="text-[2.5rem]">
+      class="bg-[#1e271e] px-4 py-3 outline-none w-[320px] text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] text-[1.2rem] correct-message hover:bg-[#343f34]"
+      [ngClass]="{'hover:bg-[#343f34]': !isLoading}">ENCORE
+    </button>
+    </div>
+    <div class="text-[2.5rem]"
+    [ngClass]="{
+      'correct-timer': isCorrect,
+      'uncorrect-timer': isUncorrect,
+    }">
       <span>{{formatTime(minutes)}}</span>:<span>{{formatTime(seconds)}}</span>:<span>{{formatTimeMili(milliseconds)}}</span>
     </div>
   </div>
