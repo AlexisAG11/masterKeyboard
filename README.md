@@ -1,6 +1,14 @@
 # MasterKeyboard
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.5.
+## What is it ?
+
+An app to train keyboard skills by generating random words for you to re-write them. Perfect to train in case you have a new keyboard or if you're just bad...
+
+## What Techno is used ?
+
+I used **Angular** for the frontend.
+For the backend I used **Express.js**.
+To randomly generate words I used the OpenAI API (gpt model)  
 
 ## Development server
 
