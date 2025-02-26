@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    apiUrl: '',
+    production: true,
+    apiUrl: 'https://master-keyboard-api.onrender.com/gptResponse',
 };
