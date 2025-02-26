@@ -2,7 +2,7 @@
 
 ## What is it ?
 
-An app to train keyboard skills by generating random words for you to re-write them. Perfect to train in case you have a new keyboard or if you're just bad...
+An app designed to help improve your keyboard skills by generating random words for you to type. Perfect for getting accustomed to a new keyboard or just improving your typing speed and accuracy.
 
 ## What Techno is used ?
 
